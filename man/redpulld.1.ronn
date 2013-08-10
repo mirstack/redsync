@@ -1,0 +1,62 @@
+redpulld(1) -- sychronizations push daemon
+==========================================
+
+## SYNOPSIS
+
+`redpulld` [-d] [-h] [-s] [-v] <HOST> <PORT> <CHANNEL>
+
+## DESCRIPTION
+
+Subscribes Redis PUB/SUB channel <CHANNEL> of the server hosted on <HOST>:<PORT>
+and passes received messages to standard output. Both <HOST> and <PORT> arguments
+must be provided.
+
+Received message goes to `STDOUT` and eventual log messages to `STDERR`.
+
+## OPTIONS
+
+  * `-d`:
+    Enables debug mode.
+
+  * `-h`:
+    Shows help screen.
+
+  * `-s`:
+    Silent mode. Logs will be not produced.
+
+  * `-v`:
+    Print version number and exit.
+
+## EXAMPLES
+
+Here's a simple example:
+
+    $ redpulld host.com 6379 cats | grep "grumpy"
+
+## REPORTING BUGS
+
+If you found any problem with the application, please start an issue on
+**project's issues page**[2].
+
+## AUTHOR
+
+Chris Kowalik, chris@nu7hat.ch.
+
+## COPYRIGHT
+
+Copyright 2013 (C) by VividCortext, support@vividcortex.com.<br />
+Released under MIT License.
+
+## NOTES
+
+  1. Project home:<br />
+     http://mirstack.org/redsyncd/
+
+  2. Project's issue tracker:<br />
+     https://github.com/mirstack/redsyncd/issues
+
+  3. Git repository:<br />
+     https://github.com/mirstack/redsyncd.git
+
+  4. VividCortex support list:<br />
+     support@vividcortex.com

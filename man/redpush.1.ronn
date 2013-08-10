@@ -1,0 +1,67 @@
+redpush(1) -- sychronizations push daemon
+=========================================
+
+## SYNOPSIS
+
+`redpush` [-d] [-h] [-s] [-v] [<HOST>:]<PORT>
+
+## DESCRIPTION
+
+Pushes message received on standard input to Redis PUB/SUB channel of the server
+that runs on <HOST>:<PORT> address. If HOST is not specified, then 127.0.0.1
+will be used by default.
+
+Server's input comes from `STDIN`, any message written there is immediately
+passed through and broadcasted to all subscribing clients. Check [EXAMPLES][]
+section to see how to set up continuously running process.
+
+Eventual log messages are written to `STDERR`.
+
+## OPTIONS
+
+  * `-d`:
+    Enables debug mode.
+
+  * `-h`:
+    Shows help screen.
+
+  * `-s`:
+    Silent mode. Logs will be not produced.
+
+  * `-v`:
+    Print version number and exit.
+
+## EXAMPLES
+
+Here's a trivial example on how to set up long running process that takes updates
+from a file:
+
+    $ tail -f /tmp/updates | redpush 6379
+
+## REPORTING BUGS
+
+If you found any problem with the application, please start an issue on
+**project's issues page**[2].
+
+## AUTHOR
+
+Chris Kowalik, chris@nu7hat.ch.
+
+## COPYRIGHT
+
+Copyright 2013 (C) by VividCortext, support@vividcortex.com.<br />
+Released under MIT License.
+
+## NOTES
+
+  1. Project home:<br />
+     http://mirstack.org/redsyncd/
+
+  2. Project's issue tracker:<br />
+     https://github.com/mirstack/redsyncd/issues
+
+  3. Git repository:<br />
+     https://github.com/mirstack/redsyncd.git
+
+  4. VividCortex support list:<br />
+     support@vividcortex.com
