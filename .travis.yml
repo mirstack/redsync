@@ -7,6 +7,9 @@ python:
 services:
   - redis-server
   
+before_install:
+  - sudo apt-get install -qq bc
+  
 install:
   - pip install redis
 
