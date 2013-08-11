@@ -1,6 +1,6 @@
 # redsync [![Build Status](https://travis-ci.org/mirstack/redsync.png?branch=master)](https://travis-ci.org/mirstack/redsync)
 
-Redis backed synchronization.
+**Redis backed synchronization.**
 
 Package provides `redpush` and `redpulld` tools that can be used to quickly and easily
 synchronize number of nodes. Provided tools run at top of Redis' PUB/SUB channels.
