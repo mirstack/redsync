@@ -1,4 +1,6 @@
-# redsync [![Build Status](https://travis-ci.org/mirstack/redsync.png?branch=master)](https://travis-ci.org/mirstack/redsync)
+# redsync 
+
+[![Build Status](https://travis-ci.org/mirstack/redsync.png?branch=master)](https://travis-ci.org/mirstack/redsync)
 
 **Redis backed synchronization.**
 
