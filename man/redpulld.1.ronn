@@ -3,7 +3,7 @@ redpulld(1) -- sychronizations push daemon
 
 ## SYNOPSIS
 
-`redpulld` [-d] [-h] [-s] [-v] <HOST> <PORT> <CHANNEL>
+  `redpulld` [-d] [-h] [-s] [-v] <HOST> <PORT> <CHANNEL>
 
 ## DESCRIPTION
 
@@ -46,6 +46,10 @@ Chris Kowalik, chris@nu7hat.ch.
 
 Copyright 2013 (C) by VividCortext, support@vividcortex.com.<br />
 Released under MIT License.
+
+## SEE ALSO
+
+redpush(1), redis-cli(1)
 
 ## NOTES
 

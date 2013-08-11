@@ -3,7 +3,7 @@ redpush(1) -- sychronizations push daemon
 
 ## SYNOPSIS
 
-`redpush` [-d] [-h] [-s] [-v] [<HOST>:]<PORT>
+  `redpush` [-d] [-h] [-s] [-v] [<HOST>:]<PORT>
 
 ## DESCRIPTION
 
@@ -51,6 +51,10 @@ Chris Kowalik, chris@nu7hat.ch.
 
 Copyright 2013 (C) by VividCortext, support@vividcortex.com.<br />
 Released under MIT License.
+
+## SEE ALSO
+
+redpulld(1), redis-cli(1)
 
 ## NOTES
 
