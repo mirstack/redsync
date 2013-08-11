@@ -4,6 +4,9 @@ python:
   - 2.6
   - 2.7
   
+services:
+  - redis-server
+  
 install:
   - pip install redis
 
