@@ -24,7 +24,31 @@ then run the following:
     
 ## Usage
 
-...
+The tool is very simple and done in UNIX way. It's meant to be glued with existing
+tools like `tail` and `echo` in order to work. For example, to start new pull server
+subscribed to specified channel run:
+
+    $ redpulld example.com 6379 hello
+
+This will connect to Redis PUB/SUB running at `example.com` on standard port `6379`
+and subscribe to `hello` channel. Now to notify that subscriber, run:
+
+    $ echo "hello this is my message" | redpush example.com 6379
+    
+This one will send `this is my message` packet to `hello` channel, which further will
+notify all the subscribers. You can connect `redpush` with whatever other tool, as it
+takes packet to send from standard input. Accepted format must be always:
+
+    CHANNEL MESSAGE\n
+    
+Each packet has only one line.
+
+### Security and authentication
+
+There's none! This tool is meant to be as simple as possible and is used internally
+within well protected virtual private cloud, thus it doesn't deal with any kind of
+authentication. Redis instance that works as a broker is also protected by not being
+accessible from the outside world.
 
 ## Hacking
 
