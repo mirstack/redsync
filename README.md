@@ -20,8 +20,8 @@ To install package from sources you need to have few dependencies installed firs
 **python 2.6 or higher**, **pip 1.0 or higher** and **bash 4.0 or higher** on your machine,
 then run the following:
 
-    $ make deps
     $ ./configure --prefix=/usr/local
+    $ make deps
     $ make install
     
 ## Usage
