@@ -59,7 +59,7 @@ have()
     return 1
 }
 
-stdutil () {
+stdutil() {
     looking "for $1"; shift
     varname="$1";    shift
 
@@ -73,7 +73,7 @@ stdutil () {
     return 0
 }
 
-reconf () {
+reconf() {
     SHCONFIG="$SHCONFIG
 $1='$2'"
     MAKECONFIG="$MAKECONFIG
