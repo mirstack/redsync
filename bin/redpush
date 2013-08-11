@@ -1,0 +1,106 @@
+#!/bin/bash
+
+VERSION="0.0.1"
+
+OUTPUT=/dev/stderr
+HOST=127.0.0.1
+PORT=
+
+usage()
+{
+    cat <<EOF
+Usage:
+
+  redpush [-d] [-h] [-s] [-v] [HOST] PORT
+
+Pushes message received on standard input to Redis PUB/SUB channel of the
+server that runs on HOST:PORT address. If HOST is not specified, then 127.0.0.1
+will be used by default.
+
+Options:
+
+  -d  Debug mode.
+  -h  Shows help screen.
+  -s  Silent mode.
+  -v  Print version number and exit.
+
+For more information check 'man redpush'.
+EOF
+}
+
+log()
+{
+    echo "$@" >$OUTPUT
+}
+
+version()
+{
+    echo $VERSION >&1
+}
+
+init()
+{
+    while getopts "dhsv" OPTION; do
+        case $OPTION in
+            h)
+                usage
+                exit 0
+                ;;
+            v)
+                version
+                exit 0
+                ;;
+            d)
+                log "DEBUG -- debug mode enabled" >&2
+                set -x
+                ;;
+            s)
+                OUTPUT=/dev/null
+                ;;
+            ?|*)
+                usage
+                exit 1
+        esac
+    done
+
+    shift $(($OPTIND - 1))
+
+    case $# in
+        1)
+            PORT=$1
+            ;;
+        2)
+            HOST=$1
+            PORT=$2
+            ;;
+        0)
+            log "ERROR -- not enough arguments"
+            exit 1
+            ;;
+        *)
+            log "ERROR -- invalid number of arguments"
+            exit 1
+            ;;
+    esac
+}
+
+main()
+{
+    read chan msg
+
+    if [[ $chan == "" || $msg == "" ]]; then
+        log "ERROR -- invalid packet received"
+        exit 1
+    fi
+
+    out=$(redis-cli --raw -h $HOST -p $PORT publish "$chan" "$msg" 2>&1)
+
+    if (( $? != 0 )); then
+        log "CRITICAL -- $(echo "$out" | sed 's/^ERR //')"
+        exit 1
+    fi
+
+    log "INFO -- published on '$chan' to $out clients: $msg"
+}
+
+init "$@" && main
