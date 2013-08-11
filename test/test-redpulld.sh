@@ -14,9 +14,9 @@ test_redpulld_fails_when_too_many_arguments_given()
 
 test_redpulld_fails_when_invalid_host_given()
 {
-    assert \
+    assert_raises \
         "redpulld invalid_host 6379 test 2>&1" \
-        "CRITICAL -- Error -5 connecting invalid_host:6379. No address associated with hostname."
+        1
 }
 
 test_redpulld_fails_when_invalid_port_given()

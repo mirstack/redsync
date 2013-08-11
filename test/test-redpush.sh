@@ -16,9 +16,9 @@ test_redpush_fails_when_too_many_arguments_given()
 
 test_redpush_fails_when_invalid_host_given()
 {
-    assert \
+    assert_raises \
         "redpush invalid_host 6379 2>&1" \
-        "CRITICAL -- Could not connect to Redis at invalid_host:6379: No address associated with hostname" \
+        1 \
         "hello world"
 }
 
