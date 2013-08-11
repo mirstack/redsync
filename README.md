@@ -54,8 +54,12 @@ accessible from the outside world.
 
 ## Hacking
 
-If you wanna hack on `redsync` just clone the repo and play with the code. You can run tests
-with `test` target:
+If you wanna hack on `redsync` just clone the repo and play with the code. 
+
+### Testing
+
+You can run tests with `test` target, but before you must start local redis server
+on default port `6379`. When your server is up, run the following command:
 
     $ make test
 
