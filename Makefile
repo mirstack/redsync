@@ -10,11 +10,11 @@ all:
 deps:
 	$(PIP) install -r requirements.txt
 
-install: install-man
+install:
 	install -d $(PREFIX)/bin
 	install -m 0755 bin/* $(PREFIX)/bin/
 
-install-man: man
+install-man: install man
 	install -d $(PREFIX)/man
 	install -m 0644 man/*.1.roff $(PREFIX)/share/man/man1/
 
