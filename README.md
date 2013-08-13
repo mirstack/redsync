@@ -26,6 +26,8 @@ then run the following:
     $ make deps
     $ make install
     
+Run `install-man` instead of `install` if you want to have man pages installed as well.
+    
 ## Usage
 
 The tool is very simple and done in UNIX way. It's meant to be glued with existing
