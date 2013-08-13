@@ -1,6 +1,6 @@
 PROJECT=redsync
 VERSION=0.0.1
-MACHINE=$(shell uname -sp | tr '[A-Z]' '[a-z]' | sed -e 's/\s/-/')
+MACHINE=unix-noarch
 
 -include config.mk
 
