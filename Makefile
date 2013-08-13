@@ -22,7 +22,7 @@ version:
 	sed -i 's/^VERSION=.*$$/VERSION="$(VERSION)"/' bin/redpush
 	sed -i 's/^version = .*$$/version = "$(VERSION)"/' bin/redpulld
 
-pack: version man
+pack: test version man
 	mkdir -p tmp/bin tmp/share/man/man1 pkg
 	cp bin/* tmp/bin/
 	cp man/*.1 tmp/share/man/man1/
