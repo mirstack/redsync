@@ -3,9 +3,10 @@
 PATH="./bin:$PATH"
 
 . ./test/assert.sh
-. ./test/test-redpulld.sh
-. ./test/test-redpush.sh
-. ./test/test-end-to-end.sh
+
+for t in ./test/test-*; do
+    . $t;
+done
 
 suite=$(typeset -F | sed 's/declare -f //' | grep '^test')
 
