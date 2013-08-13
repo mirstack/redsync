@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 PREFIX=/usr/local
 SHCONFIG=
@@ -13,17 +13,17 @@ usage()
 
 warn()
 {
-    echo -e "warn: $@" 1>&2;
+    echo "!! WARNING: $@" 1>&2;
 }
 
 fatal()
 {
-    echo -e "fatal: $@\033" 1>&2;
+    echo "!! FATAL: $@\033" 1>&2;
 }
 
 ok()
 {
-    echo -e "$@" 1>&2;
+    echo "$@" 1>&2;
 }
 
 looking()
@@ -59,7 +59,8 @@ have()
     return 1
 }
 
-stdutil() {
+stdutil()
+{
     looking "for $1"; shift
     varname="$1";    shift
 
@@ -73,7 +74,8 @@ stdutil() {
     return 0
 }
 
-reconf() {
+reconf()
+{
     SHCONFIG="$SHCONFIG
 $1='$2'"
     MAKECONFIG="$MAKECONFIG
@@ -120,35 +122,34 @@ stdutil cp CP cp
 stdutil zip ZIP zip
 stdutil bash BASH bash
 stdutil git GIT git
-stdutil ronn RONN ronn
-stdutil shocco SHOCCO shocco
+
 stdutil python PYTHON python
-stdutil pip PIP pip
-stdutil redis-cli REDIS_CLI redis-cli
-stdutil redis-server REDIS_SERVER redis-server
-
-echo
-
-if test -z "$REDIS_CLI" ; then
-    fatal "redis-cli is not installed."
-fi
-
 if test -z "$PYTHON" ; then
     fatal "python is not installed."
     exit 1
 fi
 
+stdutil pip PIP pip
+if test -z "$PIP" ; then
+    warn "pip is not installed, cannot install python dependencies."
+fi
+
+stdutil ronn RONN ronn
 if test -z "$RONN" ; then
     warn "ronn is not installed, cannot rebuild man pages."
 fi
 
+stdutil shocco SHOCCO shocco
 if test -z "$SHOCCO" ; then
     warn "shocco is not installed."
 fi
 
-if test -z "$PIP" ; then
-    warn "pip is not installed, cannot install python dependencies."
+stdutil redis-cli REDIS_CLI redis-cli
+if test -z "$REDIS_CLI" ; then
+    fatal "redis-cli is not installed."
 fi
+
+stdutil redis-server REDIS_SERVER redis-server
 
 #-------------------------------------------------------------------------------
 
@@ -159,4 +160,4 @@ EOF
 echo "$MAKECONFIG"
 
 echo
-ok "Done configuring. You can run 'make install' now."
+ok "Done with configuring. You can run 'make install' now."
