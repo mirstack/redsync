@@ -19,86 +19,84 @@ Options:
 For more information check 'man redpulld'.\
 """
 
-version = "0.0.1"
-
-#-------------------------------------------------------------------------------
+version = "0.0.2"
 
 import logging as log
+import sys
+import getopt
+import redis
 
 log_format='%(levelname)s -- %(message)s'
 log.basicConfig(level=log.INFO, format=log_format)
 
-#-------------------------------------------------------------------------------
+def init(argv):
+    opts, args = getopt.getopt(argv, "dhsv")
+    host, port, chan = None, None, None
 
-import sys
-import getopt
+    for opt,val in opts:
+        if opt == '-h':
+            print(usage)
+            exit(0)
+        elif opt == '-v':
+            print(version)
+            exit(0)
+        elif opt == '-d':
+            log.debug("debug mode enabled")
+            log.basicConfig(level=log.DEBUG)
+        elif opt == '-s':
+            log.disable(log.CRITICAL)
+        else:
+            print(usage)
+            exit(1)
 
-opts, args = getopt.getopt(sys.argv[1:], "dhsv")
-host, port, chan = None, None, None
-
-for opt,val in opts:
-    if opt == '-h':
-        print(usage)
-        exit(0)
-    elif opt == '-v':
-        print(version)
-        exit(0)
-    elif opt == '-d':
-        log.debug("debug mode enabled")
-        log.basicConfig(level=log.DEBUG)
-    elif opt == '-s':
-        log.disable(log.CRITICAL)
+    if len(args) == 3:
+        host, port, chan = args
+    elif len(args) < 3:
+        log.error("not enough arguments")
+        exit(1)
     else:
-        print(usage)
+        log.error("invalid number of arguments")
         exit(1)
 
-#-------------------------------------------------------------------------------
+    if host == "" or port == "" or chan == "":
+        log.error("invalid arguments")
+        exit(1)
 
-if len(args) == 3:
-    host, port, chan = args
-elif len(args) < 3:
-    log.error("not enough arguments")
-    exit(1)
-else:
-    log.error("invalid number of arguments")
-    exit(1)
+    return (host, port, chan)
 
-if host == "" or port == "" or chan == "":
-    log.error("invalid arguments")
-    exit(1)
+def main(host, port, chan):
+    log.debug("connecting to redis at %s:%d", host, int(port))
 
-#-------------------------------------------------------------------------------
-
-import redis
-
-log.debug("connecting to redis at %s:%d", host, int(port))
-
-r = redis.StrictRedis(host=host, port=int(port), db=0)
-
-try:
-    log.debug("trying to subscribe channel: %s", chan)
-
-    pubsub = r.pubsub()
-    pubsub.subscribe(chan)
+    r = redis.StrictRedis(host=host, port=int(port), db=0)
 
     try:
-        for item in pubsub.listen():
-            log.debug("received packet: %s", item)
+        log.debug("trying to subscribe channel: %s", chan)
 
-            typ, msg = item['type'], item['data']
+        pubsub = r.pubsub()
+        pubsub.subscribe(chan)
 
-            if typ == 'subscribe' and item['channel'] == chan:
-                log.info("subscribed to channel: %s", chan)
-            elif typ == 'message':
-                log.info("message received: %s", msg)
-                sys.stdout.write("%s\n" % msg)
-                sys.stdout.flush()
-            else:
-                log.info("invalid message: %s", item)
+        try:
+            for item in pubsub.listen():
+                log.debug("received packet: %s", item)
 
-    except KeyboardInterrupt:
-        pass # swallow...
+                typ, msg = item['type'], item['data']
 
-except redis.exceptions.ConnectionError as err:
-    log.critical(str(err))
-    exit(1)
+                if typ == 'subscribe' and item['channel'] == chan:
+                    log.info("subscribed to channel: %s", chan)
+                elif typ == 'message':
+                    log.info("message received: %s", msg)
+                    sys.stdout.write("%s\n" % msg)
+                    sys.stdout.flush()
+                else:
+                    log.info("invalid message: %s", item)
+
+        except KeyboardInterrupt:
+            pass # swallow...
+
+    except redis.exceptions.ConnectionError as err:
+        log.critical(str(err))
+        exit(1)
+
+if __name__ == "__main__":
+    host, port, chan = init(sys.argv[1:])
+    main(host, port, chan)
